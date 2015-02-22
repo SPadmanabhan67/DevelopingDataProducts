@@ -1,0 +1,74 @@
+ToothGrowth Data Explorer!
+========================================================
+author: SP! 
+date: February 20, 2015
+
+Overview
+========================================================
+
+__ToothGrowth__ Data Explorer is an interactive application 
+that allows data exploration, analysis, modeling of ToothGrowth
+Data set available on Cran-R site.
+
+The product allows user to:
+
+- Interactively Browse ToothGrowth dataset with search and 
+  pagination options on ToothGrowth
+- Analyze and visualize impact of dosage levels and supplements 
+  on tooth growth
+- Visualize a simple linear regression model for prediction.
+
+Dataset 
+========================================================
+
+```{r echo=FALSE}
+library(ggplot2)
+library(gridExtra)
+library(dplyr)
+data(ToothGrowth)
+```
+
+_Structure_
+```{r echo=FALSE}
+names(ToothGrowth)  
+```
+
+_Summary_
+```{r echo=FALSE}
+summary(ToothGrowth)
+```
+
+Plotting ToothGrowth
+========================================================
+
+```{r fig.width=20, echo=FALSE}
+g1=ggplot(data=ToothGrowth, aes_string(x="dose", y="len", color="supp", shape="supp", width=20, height=20)) + labs(title='Influence of Dosage on ToothGrowth') + geom_point(size=I(4)) + xlab('Dose') + ylab('Length of Tooth') + ggtitle("Dosage Influence on Tooth Growth") + 
+      theme(plot.title = element_text(lineheight=1.2, face="bold" ))
+
+g2=ggplot(ToothGrowth, aes_string(x="supp", y="len")) + geom_boxplot() + xlab('Supplement') + ylab('Length of Tooth') + labs(title='ToothGrowth by Dosage') 
+
+
+grid.arrange(g1,g2, ncol=2, widths=c(48,48))
+```
+
+
+* A t-Test on samples revealed with a 95% confidence that average toothgrowth was found higher than VC  
+* Higher dossage linearly influenced the tooth growth as well.
+
+Modeling a linear Regression
+========================================================
+
+```{r echo=FALSE}
+l=lm(len ~ ., data=ToothGrowth)
+par(mfrow=c(2,2))
+plot(l)
+```
+***
+
+```{r echo=FALSE, }
+l
+```
+
+
+
+Model recommends feeding a good dosage of orange juice to the pigs!
